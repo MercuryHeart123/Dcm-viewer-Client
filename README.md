@@ -1,2 +1,2 @@
-React project "DCMViewer"
-use cornerstone.js to read .dcm
+React project "DCMViewer"<br />
+use cornerstone.js to read .dcm files
