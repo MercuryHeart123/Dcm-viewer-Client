@@ -65,7 +65,7 @@ class Sidebar extends Component{
         })
 
         return (
-            <Scrollbars style={{ width:'300px', height: '91vh'}}>
+            <Scrollbars style={{ width:'20vw', height: '91vh'}}>
                 <SidebarNav >
                     {submenu}
                 </SidebarNav>
