@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import Sidebar_nested from './Sidebar_nested'
 import * as RiIcons from 'react-icons/ri'
 const SidebarLink = styled(Link)`
 
@@ -25,8 +26,8 @@ const SidebarLink = styled(Link)`
 const SidebarLabel = styled.span`
     margin-left: 16px;
 `
-
 const DropdownLink = styled(Link)`
+    display: flex;
     background: #414757;
     height: 60px;
     padding-top: 1rem;
@@ -41,9 +42,8 @@ const DropdownLink = styled(Link)`
         border-left: 4px solid #632ce4;
         cursor: pointer;
     }
-    
-    
 `
+
 class SidebarMenu extends Component{
 
     constructor(props) {
@@ -70,13 +70,20 @@ class SidebarMenu extends Component{
         return (
             <>  
             
-                <SidebarLink to={this.props.item.path} onClick={this.props.item.subNav && this.showSubnav}>
+                <SidebarLink onClick = {this.props.item.subNav && this.showSubnav}>
                     <div>
-                        {this.props.item.subNav && this.state.subNav ? this.props.item.ActiveIcon: this.props.item.subNav ? this.props.item.idleIcon : null}
+                        {/* 
+                            if have subNav and state of subnav is true will return active icon 
+                            else if only have subnav will return idle icon 
+                            else return null
+                        */}
+                        {this.props.item.subNav && this.state.subNav ? this.props.item.ActiveIcon: this.props.item.subNav ? this.props.item.idleIcon : null} 
                         <SidebarLabel>{this.props.item.title}</SidebarLabel>
                     </div>
                 </SidebarLink>
-                {this.state.subNav && this.props.item.subNav.map((item, index) => {
+                
+                <Sidebar_nested item={this.props.item.subNav} title ={'test'} presub={this.state.subNav}/>
+                {/* {this.state.subNav && this.props.item.subNav.map((item, index) => {
                     if(item.path.search('local')>=0 && this.props.indexLocal > index){
                         return (
                             <DropdownLink to={item.path} key={index}>
@@ -118,7 +125,7 @@ class SidebarMenu extends Component{
                         <RiIcons.RiArrowDownSLine />
                     </DropdownLink>
 
-                }
+                } */}
 
     
             </>

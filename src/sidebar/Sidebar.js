@@ -40,7 +40,7 @@ class Sidebar extends Component{
         this.setState({
             indexUpload: index + 2
         })
-        console.log(this.state.indexLocal);
+        console.log(this.state.indexUpload);
     }
 
     componentDidMount(){
@@ -59,17 +59,18 @@ class Sidebar extends Component{
             return null;
 
         let submenu = this.state.SidebarData.map((item) => {
+
             return <SidebarMenu item={item} indexLocal={this.state.indexLocal} indexUpload={this.state.indexUpload}
                     callbackLocalIndex={this.changeIndexLocal} callbackUploadIndex={this.changeIndexUpload}/> 
 
         })
 
         return (
-            <Scrollbars style={{ width:'20vw', height: '91vh'}}>
+            // <Scrollbars style={{ width:'20vw', height: '91vh'}}>
                 <SidebarNav >
                     {submenu}
                 </SidebarNav>
-            </Scrollbars>
+            // </Scrollbars>
 
         );
     }

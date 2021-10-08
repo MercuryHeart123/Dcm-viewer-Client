@@ -112,10 +112,11 @@ class api{
     static async pending(){
         var Localfile = await this.callLocal(); // call an api to list a file in local dir
         var subLocalfile = await this.make_nested(Localfile, '/dcm'); //pass Localfile return a full object that ready to create component
-        
+
+
         var Uploadfile = await this.callUpload();
         var subUploadfile = await this.make_nested(Uploadfile, '/dcm')
-        
+
 
 
         const SidebarData = [
@@ -124,14 +125,14 @@ class api{
                 idleIcon: <BsIcons.BsPlusSquare/>,
                 ActiveIcon: <BsIcons.BsPlusSquareFill/>,
                 subNav: subLocalfile,
-                len: subLocalfile.length,
+
             },
             {
                 title: 'Uploaded Dcm File ',
                 idleIcon: <BsIcons.BsPlusSquare/>,
                 ActiveIcon: <BsIcons.BsPlusSquareFill/>,
                 subNav: subUploadfile,
-                len: subUploadfile.length,
+
             
             }
         ]
