@@ -24,8 +24,8 @@ function App() {
         <Route path='/doc' component={Doc}/>
         <Route path='/about' component={About}/>
         <Route path='/contact' component={Contact}/>
-        <Route path='/dcm/:folder/:id' exact>
-          <DcmViewer/>
+        <Route path='/dcm/*' exact>
+          <DcmViewer />
         </Route>
       </Switch>
       </section>

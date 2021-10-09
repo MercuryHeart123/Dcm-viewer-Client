@@ -65,16 +65,23 @@ class Sidebar_nested extends Component{
 
             for(let i=0;i<item.length;i++){
 
-                if (!item[i][`title`].includes(".dcm")){
-                    return  <Sidebar_nested item={item[i][`child`][0]} title={item[i][`title`]} presub={this.state.subNav} />
+                if (!item[i][`title`].includes(".dcm") && this.props.presub){
+                    var test = item.map((element, index) => {
+                        return(
+                                <Sidebar_nested item={element[`child`][0]} title={element[`title`]} presub={this.state.subNav} />
+                        )
+                    })
+                    return test
+                    
                 }
                 else{
-                    var a = item.map((element) => {
-                        return (<DropdownLink to={element.path}>
+                    var dcm = item.map((element, index) => {  //return a component of .dcm file
+                        return (<DropdownLink to={element.path} key={index} >
                                     <SidebarLabel>{element.title}</SidebarLabel>
                                 </DropdownLink>)
                     })
-                    return a
+
+                    return dcm
 
                 }
 
@@ -105,7 +112,7 @@ class Sidebar_nested extends Component{
         return (
             
                 <>
-                    {this.props.presub &&   
+                    {this.props.presub  &&
                             <DropdownLink onClick={this.showSubnav}>
 
                                 {  this.state.subNav ? this.props.item[0].ActiveIcon: this.props.item[0].idleIcon}

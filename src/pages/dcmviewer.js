@@ -17,7 +17,7 @@ cornerstoneWADOImageLoader.configure({
 
 export default function DcmViewer() {
 
-        const {id, folder} = useParams();
+        const {...id} = useParams();
 
         useEffect(() => {
             // Enable the DOM Element for use with Cornerstone
@@ -50,7 +50,8 @@ export default function DcmViewer() {
         }
 
         function downloadAndView() {
-            let url = `http://localhost:8080/dcm/${folder}/${id}`;
+            console.log(id[0]);
+            let url = `http://localhost:8080/dcm/${id[0]}`;
 
             // prefix the url with wadouri: so cornerstone can find the image loader
             url = "wadouri:" + url;
