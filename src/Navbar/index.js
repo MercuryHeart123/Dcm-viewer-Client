@@ -20,16 +20,18 @@ class Navbars extends Component {
         let files = e.target.files;
         let reader = new FileReader();
         reader.readAsDataURL(files[0]);
-        reader.onload = (e) => {
+        reader.onload = async(e) => {
 
             const url = 'http://localhost:8080/upload'
             const formData = {file:e.target.result};
             const headers = {
                 'Content-Type': 'application/json'
               }
-            post(url, formData, {
+            await post(url, formData, {
                 headers: headers
-            })
+            }).then(this.props.reloadCallback()) //recall api to list new update
+
+
 
         }
     }

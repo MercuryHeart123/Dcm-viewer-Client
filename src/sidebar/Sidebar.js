@@ -28,12 +28,26 @@ class Sidebar extends Component{
         }
 
     }
+    updateData = () => {
+        api.pending()
+          .then((response) => {
+              let fileList = response;
+
+              this.setState({
+                    SidebarData: fileList,
+              });
+          })
+    }
+
+    ForceUpdate = () => {
+        this.updateData();
+    }
 
     changeIndexLocal = (index) => {
         this.setState({
             indexLocal: index + 2
         })
-        console.log(this.state.indexLocal);
+
     }
 
     changeIndexUpload = (index) => {
@@ -44,14 +58,7 @@ class Sidebar extends Component{
     }
 
     componentDidMount(){
-        api.pending()
-          .then((response) => {
-              let fileList = response;
-
-              this.setState({
-                    SidebarData: fileList,
-              });
-          })
+        this.updateData();
     }
 
     render(){
