@@ -39,21 +39,7 @@ class Navbars extends Component {
 
       };
 
-    changeContext = (e) => {
-        this.setState({
-            selected: e
-        })
-    }
 
-    onPress = (ele) =>{
-        if(ele.key === "Enter"){
-
-            this.props.history.push(``);
-            this.props.history.push(`/dcm/${this.state.selected.toLowerCase()}/${ele.target.value}`);
-
-        }
-    }
-    
     render(){
         return (
             <>
@@ -75,8 +61,7 @@ class Navbars extends Component {
     
                     </NavMenu>
                     <NavBtn>
-                        <Dropdown selected={this.state.selected} context={this.changeContext}/>
-                        <input type='text' placeholder='Search...' onKeyDown={this.onPress} />
+
                         <input type='file' id='file' onChange={this.onButtonUpload} ref={this.myRef} style={{display: 'none'}}/>
                         <NavBtnLink  onClick={this.onButtonClick}>
                             Upload

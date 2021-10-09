@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import dicomParser  from "dicom-parser";
 import './css/dcmviewer.css';
 import cornerstone from "cornerstone-core";
