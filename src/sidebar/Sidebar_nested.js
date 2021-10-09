@@ -62,15 +62,24 @@ class Sidebar_nested extends Component{
 
     render(){
         var gen_dir = (item) => {
-            console.log(item);
+
             for(let i=0;i<item.length;i++){
-                console.log();
-                if (!item[i][`child`][0][0][`title`].includes(".dcm")){
-                    return  <Sidebar_nested item={item[i][`child`][0]} title={item[i][`title`]} presub={this.state.subNav} >
-     
-                            </Sidebar_nested>
+
+                if (!item[i][`title`].includes(".dcm")){
+                    return  <Sidebar_nested item={item[i][`child`][0]} title={item[i][`title`]} presub={this.state.subNav} />
                 }
+                else{
+                    var a = item.map((element) => {
+                        return (<DropdownLink to={element.path}>
+                                    <SidebarLabel>{element.title}</SidebarLabel>
+                                </DropdownLink>)
+                    })
+                    return a
+
+                }
+
             }
+
         }
 
         //     let key = Object.keys(item);
@@ -107,7 +116,7 @@ class Sidebar_nested extends Component{
                             </DropdownLink> 
                            
                     }
-                    {this.state.subNav && gen_dir(this.props.item)  }
+                    {this.state.subNav && this.props.presub && gen_dir(this.props.item)  }
                 </>)
     }
 }
