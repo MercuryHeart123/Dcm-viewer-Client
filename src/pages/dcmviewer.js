@@ -50,7 +50,7 @@ export default function DcmViewer() {
         }
 
         function downloadAndView() {
-            console.log(id[0]);
+
             let url = `http://localhost:8080/dcm/${id[0]}`;
 
             // prefix the url with wadouri: so cornerstone can find the image loader

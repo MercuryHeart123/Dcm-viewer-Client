@@ -1,26 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-
-const SidebarLink = styled(Link)`
-
-    display: flex;
-    color: #256CE1;
-    justify-content: space-between;
-    align-item: center;
-    padding: 20px;
-    list-style: none;
-    height: 60px;
-    text-decoration: none;
-    font-size: 18px;
-
-
-    &:hover{
-        background: #252831;
-        border-left: 4px solid #632ce4;
-        cursor: pointer;
-    }
-`
+import * as HiIcons from 'react-icons/hi'
 
 const SidebarLabel = styled.span`
     margin-left: 16px;
@@ -28,10 +9,9 @@ const SidebarLabel = styled.span`
 const DropdownLink = styled(Link)`
     display: flex;
     background: #414757;
-    height: 60px;
-    padding-top: 1rem;
+    padding:0.5rem;
     padding-left: 3rem;
-    padding-right: 5rem;
+    padding-right: 4rem;
     align-item: center;
     text-decoration: none;
     color: #256CE1;
@@ -61,22 +41,32 @@ class Sidebar_nested extends Component{
     }
 
     render(){
+        var name_check = (name) => {
+            if(name == 'local' || name == 'upload'){ //skip title name local and upload by set first call is true
+                return true
+            }
+            return false
+        }
         var gen_dir = (item) => {
-
+            if(this.props.firstcall){ // if isfirstcall will skip render this component 
+                this.state.subNav = true
+            }
             for(let i=0;i<item.length;i++){
 
                 if (!item[i][`title`].includes(".dcm") && this.props.presub){
-                    var test = item.map((element, index) => {
+                    var sub_dir = item.map((element, index) => {
                         return(
-                                <Sidebar_nested item={element[`child`][0]} title={element[`title`]} presub={this.state.subNav} />
+                                <Sidebar_nested item={element[`child`][0]} firstcall={name_check(element[`title`])} 
+                                                title={element[`title`]} pad={this.props.pad + 2} presub={this.state.subNav} />
                         )
                     })
-                    return test
+                    return sub_dir
                     
                 }
                 else{
                     var dcm = item.map((element, index) => {  //return a component of .dcm file
-                        return (<DropdownLink to={element.path} key={index} >
+                        return (<DropdownLink to={element.path} key={index} style={{paddingLeft:`${2+this.props.pad}rem`}}>
+                                    <HiIcons.HiOutlineDocumentText/>
                                     <SidebarLabel>{element.title}</SidebarLabel>
                                 </DropdownLink>)
                     })
@@ -89,31 +79,11 @@ class Sidebar_nested extends Component{
 
         }
 
-        //     let key = Object.keys(item);
-        //     console.log(key);
-        //     for(let i=0;i<key.length;i++){
-        //         if (!key[i].includes('.dcm')){
-        //             return  <Sidebar_nested item={item[`${key[i]}`]}>
-        //                         {key[i]}
-        //                     </Sidebar_nested>
-        //         }
-        //         else{
-
-        //             key.map((item) => {
-        //                 return  <DropdownLink>
-        //                             {item}
-        //                         </DropdownLink>
-        //             })
-        //             return <></>
-        //         }
-        //     }
-        // }
-        
         return (
             
                 <>
-                    {this.props.presub  &&
-                            <DropdownLink onClick={this.showSubnav}>
+                    {this.props.presub  && this.props.firstcall == false &&
+                            <DropdownLink onClick={this.showSubnav} style={{paddingLeft:`${this.props.pad}rem`}}>
 
                                 {  this.state.subNav ? this.props.item[0].ActiveIcon: this.props.item[0].idleIcon}
                                 <SidebarLabel>
@@ -123,7 +93,7 @@ class Sidebar_nested extends Component{
                             </DropdownLink> 
                            
                     }
-                    {this.state.subNav && this.props.presub && gen_dir(this.props.item)  }
+                    {(this.props.firstcall || this.state.subNav ) && this.props.presub && gen_dir(this.props.item)  }
                 </>)
     }
 }

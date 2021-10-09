@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Sidebar_nested from './Sidebar_nested'
-import * as RiIcons from 'react-icons/ri'
 const SidebarLink = styled(Link)`
 
     display: flex;
@@ -82,7 +81,7 @@ class SidebarMenu extends Component{
                     </div>
                 </SidebarLink>
                 
-                <Sidebar_nested item={this.props.item.subNav} title ={'test'} presub={this.state.subNav}/>
+                <Sidebar_nested item={this.props.item.subNav} firstcall={true} title ={''} pad={0} presub={this.state.subNav}/>
                 {/* {this.state.subNav && this.props.item.subNav.map((item, index) => {
                     if(item.path.search('local')>=0 && this.props.indexLocal > index){
                         return (
