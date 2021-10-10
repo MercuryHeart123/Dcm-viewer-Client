@@ -1,0 +1,11 @@
+.chart{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+
+    height: 33%;
+    width: 33%;
+}

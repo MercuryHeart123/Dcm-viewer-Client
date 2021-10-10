@@ -8,6 +8,7 @@ import Navbar from './Navbar'
 import Doc from './pages/doc'
 import About from './pages/about'
 import Contact from './pages/contact'
+import CSV from './pages/csv'
 
 class App extends Component{
 
@@ -31,6 +32,7 @@ class App extends Component{
                   <Route path='/doc' component={Doc}/>
                   <Route path='/about' component={About}/>
                   <Route path='/contact' component={Contact}/>
+                  <Route path='/csv/*' component={CSV}/>
                   <Route path='/dcm/*' exact>
                     <DcmViewer />
                   </Route>

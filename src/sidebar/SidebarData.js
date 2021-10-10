@@ -1,6 +1,3 @@
-// BsPlusSquareFill
-// BsPlusSquare
-
 import * as BsIcons from 'react-icons/bs'
 const http = require('http');
 class api{
@@ -137,7 +134,7 @@ class api{
             
             }
         ]
-        console.log(SidebarData);
+
         return SidebarData
     }
 }

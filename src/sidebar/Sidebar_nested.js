@@ -23,6 +23,25 @@ const DropdownLink = styled(Link)`
     }
 `
 
+const Dropdown = styled.span`
+    display: flex;
+    background: #414757;
+    padding:0.5rem;
+    padding-left: 3rem;
+    padding-right: 4rem;
+    align-item: center;
+    text-decoration: none;
+    color: #256CE1;
+    font-size: 18px;
+    &:hover{
+        background: #252831;
+        border-left: 4px solid #632ce4;
+        cursor: pointer;
+    }
+`
+
+
+
 class Sidebar_nested extends Component{
 
     constructor(props) {
@@ -84,14 +103,14 @@ class Sidebar_nested extends Component{
             
                 <>
                     {this.props.presub  && this.props.firstcall == false &&
-                            <DropdownLink onClick={this.showSubnav} style={{paddingLeft:`${this.props.pad}rem`}}>
+                            <Dropdown  onClick={this.showSubnav} style={{paddingLeft:`${this.props.pad}rem`}}>
 
                                 {  this.state.subNav ? this.props.item[0].ActiveIcon: this.props.item[0].idleIcon}
                                 <SidebarLabel>
                                     {this.props.title }
                                 </SidebarLabel>
 
-                            </DropdownLink> 
+                            </Dropdown> 
                            
                     }
                     {(this.props.firstcall || this.state.subNav ) && this.props.presub && gen_dir(this.props.item)  }

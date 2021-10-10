@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import * as RiIcons from 'react-icons/ri'
 import Sidebar_nested from './Sidebar_nested'
-const SidebarLink = styled(Link)`
+const SidebarLink = styled.span`
 
     display: flex;
     color: #256CE1;
@@ -43,6 +43,24 @@ const DropdownLink = styled(Link)`
         cursor: pointer;
     }
 `
+const Dropdown = styled.span`
+display: flex;
+background: #414757;
+height: 60px;
+padding-top: 1rem;
+padding-left: 3rem;
+padding-right: 5rem;
+align-item: center;
+text-decoration: none;
+color: #256CE1;
+font-size: 18px;
+&:hover{
+    background: #252831;
+    border-left: 4px solid #632ce4;
+    cursor: pointer;
+}
+`
+
 
 class SidebarMenu extends Component{
 
@@ -50,7 +68,7 @@ class SidebarMenu extends Component{
         super(props);
         this.state = {
             subNav: false,
-            click: false
+
         }
       }
 
@@ -84,27 +102,10 @@ class SidebarMenu extends Component{
                 </SidebarLink>
                 
                 <Sidebar_nested item={this.props.item.subNav} firstcall={true} title ={''} pad={2} presub={this.state.subNav}/>
-                {/* {this.state.subNav && this.props.item.subNav.map((item, index) => {
-                    if(item.path.search('local')>=0 && this.props.indexLocal > index){
-                        return (
-                            <DropdownLink to={item.path} key={index}>
-                                {item.idleIcon}
-                                <SidebarLabel>{item.title}</SidebarLabel>
-                            </DropdownLink>
-                        )
-                    }
-                    if(item.path.search('upload')>=0 && this.props.indexUpload > index){
-                        return (
-                            <DropdownLink to={item.path} key={index}>
-                                {item.idleIcon}
-                                <SidebarLabel>{item.title}</SidebarLabel>
-                            </DropdownLink>
-                        )
-                    }
-                })} */}
+
                 {this.state.subNav && this.props.item.title.search('Local') >=0 && this.props.indexLocal < this.props.item.MaxIndex &&
 
-                        <DropdownLink style={{
+                        <Dropdown style={{
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -113,11 +114,11 @@ class SidebarMenu extends Component{
                         }} onClick={this.sendBackIndexLocal}>
                             <RiIcons.RiArrowDownSLine />
                             {` ${this.props.item.MaxIndex - this.props.indexLocal} Left`}
-                        </DropdownLink>
+                        </Dropdown>
                 }
                 {this.state.subNav && this.props.item.title.search('Upload') >=0 && this.props.indexUpload < this.props.item.MaxIndex &&
 
-                    <DropdownLink style={{
+                    <Dropdown style={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -126,7 +127,7 @@ class SidebarMenu extends Component{
                     }} onClick={this.sendBackIndexUpload}>
                         <RiIcons.RiArrowDownSLine />
                         {` ${this.props.item.MaxIndex - this.props.indexUpload} Left`}
-                    </DropdownLink>
+                    </Dropdown>
 
                 }
 

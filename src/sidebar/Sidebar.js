@@ -5,7 +5,7 @@ import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
 import SidebarMenu from './SidebarMenu'
 import api from './SidebarData';
-import { Scrollbars } from 'react-custom-scrollbars-2' 
+
 
 const SidebarNav =  styled.nav`
     background: #252831;
