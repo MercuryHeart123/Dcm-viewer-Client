@@ -42,7 +42,7 @@ class Sidebar_nested extends Component{
 
     render(){
         var name_check = (name) => {
-            if(name == 'local' || name == 'upload'){ //skip title name local and upload by set first call is true
+            if(name == 'local' || name == 'upload' || name == 'MaxIndex'){ //skip title name local and upload by set first call is true
                 return true
             }
             return false
@@ -51,6 +51,7 @@ class Sidebar_nested extends Component{
             if(this.props.firstcall){ // if isfirstcall will skip render this component 
                 this.state.subNav = true
             }
+
             for(let i=0;i<item.length;i++){
 
                 if (!item[i][`title`].includes(".dcm") && this.props.presub){
@@ -65,7 +66,7 @@ class Sidebar_nested extends Component{
                 }
                 else{
                     var dcm = item.map((element, index) => {  //return a component of .dcm file
-                        return (<DropdownLink to={element.path} key={index} style={{paddingLeft:`${2+this.props.pad}rem`}}>
+                        return (<DropdownLink to={element.path} key={index} style={{paddingLeft:`${this.props.pad}rem`}}>
                                     <HiIcons.HiOutlineDocumentText/>
                                     <SidebarLabel>{element.title}</SidebarLabel>
                                 </DropdownLink>)

@@ -29,7 +29,7 @@ class Navbars extends Component {
               }
             await post(url, formData, {
                 headers: headers
-            }).then(this.props.reloadCallback()) //recall api to list new update
+            }).then(alert("Your file has been uploaded!")).then(this.props.reloadCallback()) //recall api to list new update
 
 
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import * as RiIcons from 'react-icons/ri'
 import Sidebar_nested from './Sidebar_nested'
 const SidebarLink = styled(Link)`
 
@@ -58,11 +59,12 @@ class SidebarMenu extends Component{
     })
 
     sendBackIndexLocal = () =>{
-        this.props.callbackLocalIndex(this.props.indexLocal)
+
+        this.props.callbackLocalIndex()
     }
 
     sendBackIndexUpload = () =>{
-        this.props.callbackUploadIndex(this.props.indexUpload)
+        this.props.callbackUploadIndex()
     }
     
     render(){
@@ -81,7 +83,7 @@ class SidebarMenu extends Component{
                     </div>
                 </SidebarLink>
                 
-                <Sidebar_nested item={this.props.item.subNav} firstcall={true} title ={''} pad={0} presub={this.state.subNav}/>
+                <Sidebar_nested item={this.props.item.subNav} firstcall={true} title ={''} pad={2} presub={this.state.subNav}/>
                 {/* {this.state.subNav && this.props.item.subNav.map((item, index) => {
                     if(item.path.search('local')>=0 && this.props.indexLocal > index){
                         return (
@@ -99,8 +101,8 @@ class SidebarMenu extends Component{
                             </DropdownLink>
                         )
                     }
-                })}
-                {this.state.subNav && this.props.item.title.search('Local') >=0 && this.props.indexLocal < this.props.item.len &&
+                })} */}
+                {this.state.subNav && this.props.item.title.search('Local') >=0 && this.props.indexLocal < this.props.item.MaxIndex &&
 
                         <DropdownLink style={{
                             display: 'flex',
@@ -110,9 +112,10 @@ class SidebarMenu extends Component{
                             
                         }} onClick={this.sendBackIndexLocal}>
                             <RiIcons.RiArrowDownSLine />
+                            {` ${this.props.item.MaxIndex - this.props.indexLocal} Left`}
                         </DropdownLink>
                 }
-                {this.state.subNav && this.props.item.title.search('Upload') >=0 && this.props.indexUpload < this.props.item.len &&
+                {this.state.subNav && this.props.item.title.search('Upload') >=0 && this.props.indexUpload < this.props.item.MaxIndex &&
 
                     <DropdownLink style={{
                         display: 'flex',
@@ -122,9 +125,10 @@ class SidebarMenu extends Component{
                         
                     }} onClick={this.sendBackIndexUpload}>
                         <RiIcons.RiArrowDownSLine />
+                        {` ${this.props.item.MaxIndex - this.props.indexUpload} Left`}
                     </DropdownLink>
 
-                } */}
+                }
 
     
             </>

@@ -28,8 +28,8 @@ class Sidebar extends Component{
         }
 
     }
-    updateData = () => {
-        api.pending()
+    updateData = (indexLocal, indexUpload) => {
+        api.pending(indexLocal, indexUpload)
           .then((response) => {
               let fileList = response;
 
@@ -40,25 +40,25 @@ class Sidebar extends Component{
     }
 
     ForceUpdate = () => {
-        this.updateData();
+        this.state.indexUpload += 1;
+        this.updateData(this.state.indexUpload);
     }
 
-    changeIndexLocal = (index) => {
-        this.setState({
-            indexLocal: index + 2
-        })
+    changeIndexLocal = () => {
+        this.state.indexLocal += 2;
+        this.updateData(this.state.indexLocal, this.state.indexUpload);
 
     }
 
-    changeIndexUpload = (index) => {
-        this.setState({
-            indexUpload: index + 2
-        })
-        console.log(this.state.indexUpload);
+    changeIndexUpload = () => {
+        this.state.indexUpload += 2;
+        
+        this.updateData(this.state.indexLocal, this.state.indexUpload);
+
     }
 
     componentDidMount(){
-        this.updateData();
+        this.updateData(this.state.indexLocal, this.state.indexUpload);
     }
 
     render(){

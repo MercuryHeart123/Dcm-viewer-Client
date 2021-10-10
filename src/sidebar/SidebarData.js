@@ -4,13 +4,13 @@
 import * as BsIcons from 'react-icons/bs'
 const http = require('http');
 class api{
-    static callLocal(){
+    static callLocal(index){
         return new Promise(async(resolve, reject) => {
 
             const options = {
                 hostname: 'localhost',
                 port: 8080,
-                path: '/list/local',
+                path: `/list/local/${index}`,
                 method: 'GET'
             }
             const req = await http.request(options, res => {
@@ -31,13 +31,13 @@ class api{
         })
     }
 
-    static callUpload(){
+    static callUpload(index){
         return new Promise(async(resolve, reject) => {
 
             const options = {
                 hostname: 'localhost',
                 port: 8080,
-                path: '/list/upload',
+                path: `/list/upload/${index}`,
                 method: 'GET'
             }
             const req = await http.request(options, res => {
@@ -109,12 +109,12 @@ class api{
         return arr //exit condition
     }
 
-    static async pending(){
-        var Localfile = await this.callLocal(); // call an api to list a file in local dir
+    static async pending(indexLocal, indexUpload){
+        var Localfile = await this.callLocal(indexLocal); // call an api to list a file in local dir
         var subLocalfile = await this.make_nested(Localfile, '/dcm'); //pass Localfile return a full object that ready to create component
 
 
-        var Uploadfile = await this.callUpload();
+        var Uploadfile = await this.callUpload(indexUpload);
         var subUploadfile = await this.make_nested(Uploadfile, '/dcm')
 
 
@@ -125,6 +125,7 @@ class api{
                 idleIcon: <BsIcons.BsPlusSquare/>,
                 ActiveIcon: <BsIcons.BsPlusSquareFill/>,
                 subNav: subLocalfile,
+                MaxIndex: Localfile.MaxIndex,
 
             },
             {
@@ -132,10 +133,11 @@ class api{
                 idleIcon: <BsIcons.BsPlusSquare/>,
                 ActiveIcon: <BsIcons.BsPlusSquareFill/>,
                 subNav: subUploadfile,
-
+                MaxIndex: Uploadfile.MaxIndex,
             
             }
         ]
+        console.log(SidebarData);
         return SidebarData
     }
 }
