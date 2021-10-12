@@ -11,7 +11,8 @@ const SidebarNav =  styled.nav`
     background: #252831;
     font-size: 2rem;
     padding-right: 2px;
-    min-height: 100vh;
+    min-height: 90vh;
+
     display: flex;
     flex-direction: column ; 
 

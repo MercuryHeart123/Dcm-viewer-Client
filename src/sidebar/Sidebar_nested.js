@@ -10,6 +10,7 @@ const DropdownLink = styled(Link)`
     display: flex;
     background: #414757;
     padding:0.5rem;
+    min-width: 15%;
     padding-left: 3rem;
     padding-right: 4rem;
     align-item: center;
@@ -77,7 +78,7 @@ class Sidebar_nested extends Component{
                     var sub_dir = item.map((element, index) => {
                         return(
                                 <Sidebar_nested item={element[`child`][0]} firstcall={name_check(element[`title`])} 
-                                                title={element[`title`]} pad={this.props.pad + 2} presub={this.state.subNav} />
+                                                title={element[`title`]} pad={this.props.pad + 1} presub={this.state.subNav} />
                         )
                     })
                     return sub_dir
@@ -86,7 +87,7 @@ class Sidebar_nested extends Component{
                 else{
                     var dcm = item.map((element, index) => {  //return a component of .dcm file
                         return (<DropdownLink to={element.path} key={index} style={{paddingLeft:`${this.props.pad}rem`}}>
-                                    <HiIcons.HiOutlineDocumentText/>
+                                    <HiIcons.HiOutlineDocumentText />
                                     <SidebarLabel>{element.title}</SidebarLabel>
                                 </DropdownLink>)
                     })

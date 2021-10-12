@@ -1,45 +1,46 @@
 import React, { Component } from 'react'
 import { Bar } from 'react-chartjs-2'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { parse } from "papaparse";
 import './css/csv.css'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 class csv extends Component{
     constructor(props){
         super(props);
         this.state = {
           csvFile: [],
-          chartData:{},      
+          obj: null,
+          nonUniqueChart: [],
+          allkey: [],
+          loadedFile: [],
+          loadedIndex: 25,
+          color: [`rgba(255, 99, 132, 0.6)`,`rgba(54, 162, 235, 0.6)`], // init color of chart
         }
-      }
-    
-      static defaultProps = {
-        displayTitle:true,
-        displayLegend: true,
-        location:'City'
       }
       
       setChartData = (csvFile) => {
+        this.state.loadedFile = csvFile.slice(0,26); // slice full array to loadedFile(by index)
         var key = Object.keys(csvFile[0]);
         var obj = {};
-        key.forEach(e => {
+        key.forEach(e => { // create unique key in obj
             obj[`${e}`] = {'unique': []};
 
         })
 
         csvFile.forEach(element => {
-            var value = Object.values(element);
+            var value = Object.values(element); // find unique key and non unique to make data chart
             for(let i=0;i<key.length;i++){
 
                 var head = key[i];
                 var index = i;
 
-                if(obj[`${head}`][`${value[index]}`]){
+                if(obj[`${head}`][`${value[index]}`]){ //if found non unique, value add one more
                     obj[`${head}`][`${value[index]}`] += 1;
                     continue
                 }
 
-                if(obj[`${head}`][`unique`].includes(value[index])){
+                if(obj[`${head}`][`unique`].includes(value[index])){ // if found value in unique, delete it from unique and create another key(value = 2)
                     var tmpindex = obj[`${head}`][`unique`].indexOf(value[index])
                     if(tmpindex !== -1) {
                         obj[`${head}`][`unique`].splice(tmpindex, 1);
@@ -49,7 +50,7 @@ class csv extends Component{
 
                 }
 
-                if(obj[`${head}`][`${value[index]}`] == null){
+                if(obj[`${head}`][`${value[index]}`] == null){ // if not found a key add that value to unique keys
                     obj[`${head}`][`unique`].push(value[index]); 
                     
                     continue;
@@ -61,88 +62,119 @@ class csv extends Component{
         });
 
         var arr_label = [];
-        var arr_unigue = [];
-        Object.keys(obj).map((item) => { // map label of chart
+        var Key = Object.keys(obj);
+        console.log(key);
+        Key.map((item) => { // map nonUnique label to arr_label
             if(obj[item][`unique`].length == 0){
                 arr_label.push(item)
+                Key.push(item)
+
                 return;
             }
-            arr_unigue.push(item)
-        });
-        var dataset = [];
-        var dataset2 = [];
-        Object.keys(obj).map((item) => { // map data prepare to show
-            if(obj[item][`unique`].length == 0){
-                dataset.push(obj[item][0]);
-                dataset2.push(obj[item][1]);
-            }
-        });
-        
-        var arr_red = [];
-        var arr_blue = [];
-        arr_label.forEach((element) => { // map color use in background color
-            arr_red.push('rgba(255, 99, 132, 0.6)');
-            arr_blue.push('rgba(54, 162, 235, 0.6)');
-        })
 
-        this.setState({
-            chartData: {
-                labels: arr_label,
-            datasets:[
-              {
-                label:'0', // need to dynamic
-                data: dataset,
-                backgroundColor: arr_red
-              },
-              {
-                label:'1', // need to dynamic
-                data: dataset2,
-                backgroundColor: arr_blue
-              }
-            ]
-          }
-        })
+        });
 
+        this.setState({ // set state in componentDidMount
+            nonUniqueChart: arr_label,
+            obj: obj,
+            allkey: key,
+        })
 
       }
 
+      createChart = (name) => {
+        var datachart = this.state.obj[`${name}`];
+        delete datachart[`unique`] // don't need unique key cause createChart can create only nonUnique keys
+        var label_arr = Object.keys(datachart);
+
+        var data = {
+                labels: [name],
+                datasets:
+                      label_arr.map((label_name, index)=>{ // return array that contain label and data and background set to index of state.color
+                        return {  label : `${label_name}`,
+                                  data : [datachart[`${label_name}`].toString()],
+                                  backgroundColor : this.state.color[index]
+                                  }
+                      })
+          }
+
+          return data
+      }
+
       async componentDidMount(){
-            await parse('http://localhost:8080/csv/1', {
+            await parse('http://localhost:8080/csv/1', {  // use papaparse to parse data of csv file to json  
                             download: true,
                             header: true,
                             skipEmptyLines: true,
                             complete: async(e)=> {
-
                                 await this.setState({
                                     csvFile: e.data,
                                 })
-                                this.setChartData(this.state.csvFile);
+                                this.setChartData(this.state.csvFile) // set init value to state
                             }
           })
 
       }
+
+      loadMoreCsvData = () => {
+        this.setState({ //load more 10 index
+          loadedFile: this.state.csvFile.slice(0,this.state.loadedIndex)
+        })
+        this.state.loadedIndex+=10;
+      }
+
       render(){
+        let createChart =  this.state.nonUniqueChart.map((name, index) => {
+          return <Bar data={this.createChart(name)}/>
+        })
+
         return (
+          <section style={{display:'inline-flex',marginLeft: 'auto',marginRight: 'auto'}}>
           <div class="chart" >
-            <Bar
-              data={this.state.chartData}
-              options={{
-                title:{
-                  display:this.props.displayTitle,
-                  text:'Largest Cities In '+'123',
-                  fontSize:25
-                },
-                legend:{
-                  display:this.props.displayLegend,
-                  position:this.props.legendPosition
-                }
-              }}
-            />
-            {`${this.state.csvFile.length}`} 
-            {/*need to dynamic*/}
+
+            {createChart} {/* call createChart to create chart from csvFile that prepare by componentdidmount */}
     
-           
           </div>
+          {this.state.obj !== null &&
+          <div id="scrollableDiv" style={{ height: '90vh', overflow: "auto" }}> 
+            {/* make table to overflow and can scrollable */}
+            <InfiniteScroll dataLength={this.state.loadedFile.length}
+                            next={this.loadMoreCsvData}
+                            hasMore={true}
+                            scrollableTarget="scrollableDiv"
+                            loader={<h4>Loading...</h4>}
+                            >
+              {/* loadedIndex increase by 10 every client reach bottom of table */}
+              <div style={{paddingRight:'2vw',maxWidth: '40vw', paddingTop:'2vh'}}>
+
+                  <table class='table' > 
+                    <thead>
+                      <tr>
+                        {Object.keys(this.state.loadedFile[0]).map((element, index) => {
+                          return <th scope="col">{element}</th>
+                        })}
+                      </tr>
+                    </thead>
+                    <tbody >
+                      {/* loop through loadedFile to display data from csvFile */}
+                      {this.state.loadedFile.map((element, index) => {
+                        return  <tr>
+                                    {this.state.allkey.map((e, index) => {
+                                      if(index==0){ // return <th/> on first loop
+                                        return <th scope="row">{element[`${this.state.allkey[0]}`]}</th>
+                                      }
+                                      return <td>{element[e]}</td>
+                                      })
+                                    }
+                                </tr>
+                      })}
+                    </tbody>
+                  </table>
+              </div>
+            </InfiniteScroll>
+          </div>}
+          </section>
+          
         )
       }
     }

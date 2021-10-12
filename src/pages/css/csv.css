@@ -1,11 +1,10 @@
 .chart{
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    margin-top: 5vh;
-    margin-left: auto;
-    margin-right: auto;
 
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-left: 3vw;
+    margin-right: 2vw;
     height: 33%;
-    width: 33%;
+    width: 35%;
 }
+#scrollableDiv::-webkit-scrollbar { width: 0 !important }  /* hide scrollbar but scrollable */
