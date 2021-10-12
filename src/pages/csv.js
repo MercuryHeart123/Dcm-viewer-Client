@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { parse } from "papaparse";
 import './css/csv.css'
 import InfiniteScroll from "react-infinite-scroll-component";
+import { withRouter } from "react-router";
 
 class csv extends Component{
     constructor(props){
@@ -101,8 +102,17 @@ class csv extends Component{
           return data
       }
 
-      async componentDidMount(){
-            await parse('http://localhost:8080/csv/1', {  // use papaparse to parse data of csv file to json  
+      loadMoreCsvData = () => {
+        this.setState({ //load more 10 index
+          loadedFile: this.state.csvFile.slice(0,this.state.loadedIndex)
+        })
+        this.state.loadedIndex+=10;
+      }
+
+      start = async() => {
+        const {...id} = this.props.match.params;
+
+            await parse(`http://localhost:8080/csv/${id[0]}`, {  // use papaparse to parse data of csv file to json  
                             download: true,
                             header: true,
                             skipEmptyLines: true,
@@ -113,17 +123,21 @@ class csv extends Component{
                                 this.setChartData(this.state.csvFile) // set init value to state
                             }
           })
-
+      }
+      async componentWillMount(){
+            this.start();
       }
 
-      loadMoreCsvData = () => {
-        this.setState({ //load more 10 index
-          loadedFile: this.state.csvFile.slice(0,this.state.loadedIndex)
-        })
-        this.state.loadedIndex+=10;
+      componentDidUpdate (prevProps){
+
+        if(this.props.location.pathname !== prevProps.location.pathname){ // call when pathname changed
+          this.start();
+        }
       }
 
+  
       render(){
+
         let createChart =  this.state.nonUniqueChart.map((name, index) => {
           return <Bar data={this.createChart(name)}/>
         })
@@ -179,4 +193,6 @@ class csv extends Component{
       }
     }
 
-export default csv
+var CSV2 = withRouter(csv)
+
+export default CSV2

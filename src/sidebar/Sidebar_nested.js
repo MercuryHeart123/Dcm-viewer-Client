@@ -62,7 +62,7 @@ class Sidebar_nested extends Component{
 
     render(){
         var name_check = (name) => {
-            if(name == 'local' || name == 'upload' || name == 'MaxIndex'){ //skip title name local and upload by set first call is true
+            if(name == 'local' || name == 'upload' || name == 'MaxIndex' || name == 'csv'){ //skip title name local and upload by set first call is true
                 return true
             }
             return false
@@ -73,8 +73,8 @@ class Sidebar_nested extends Component{
             }
 
             for(let i=0;i<item.length;i++){
+                if ((!item[i][`title`].includes(".dcm") && (!item[i][`title`].includes(".csv") )) && this.props.presub){
 
-                if (!item[i][`title`].includes(".dcm") && this.props.presub){
                     var sub_dir = item.map((element, index) => {
                         return(
                                 <Sidebar_nested item={element[`child`][0]} firstcall={name_check(element[`title`])} 

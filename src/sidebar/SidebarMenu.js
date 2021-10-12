@@ -100,7 +100,7 @@ class SidebarMenu extends Component{
                         <SidebarLabel>{this.props.item.title}</SidebarLabel>
                     </div>
                 </SidebarLink>
-                
+                {console.log(this.props.item.subNav )}
                 <Sidebar_nested item={this.props.item.subNav} firstcall={true} title ={''} pad={2} presub={this.state.subNav}/>
 
                 {this.state.subNav && this.props.item.title.search('Local') >=0 && this.props.indexLocal < this.props.item.MaxIndex &&

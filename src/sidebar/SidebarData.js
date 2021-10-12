@@ -53,8 +53,37 @@ class api{
             })
             req.end()
         })
+
+        
         
 
+    }
+
+    static callCsv(){
+        return new Promise(async(resolve, reject) => {
+
+            const options = {
+                hostname: 'localhost',
+                port: 8080,
+                path: `/list/csv/`,
+                method: 'GET'
+            }
+            const req = await http.request(options, res => {
+                console.log(`statusCode: ${res.statusCode}`)
+            
+                res.on('data', d => {
+                    var string = new TextDecoder().decode(d);
+                    var filelist = JSON.parse(string);
+                    resolve(filelist)
+                })
+            })
+            
+            req.on('error', error => {
+                console.error(error)
+                reject(error)
+            })
+            req.end()
+        })
     }
 
     static async make_nested(Localfile, path){
@@ -63,7 +92,8 @@ class api{
         var tmp = [];
         var arr = [];
         for(let i=0; i<key.length ; i++){
-            if(!key[i].includes(".dcm")){
+            console.log(key[i]);
+            if(Localfile[key[i]] != true){
                 var obj =   {
                                 title: `${key[i]}`,
                                 idleIcon: <BsIcons.BsPlusSquare/>,
@@ -75,9 +105,11 @@ class api{
                     obj[`child`] = [];
                 }
                 var check = await this.make_nested(nested_obj, path + '/' + key[i]) // pending promises and pass a key to nest an obj
+
                 var nested_file = [];
                 check.forEach(element => {
-                    if(String(element).includes('.dcm')){ //check return from recursion is a .dcm file
+
+                    if(String(element).includes('.dcm') || String(element).includes('.csv')){ //check return from recursion is a .dcm file
                         nested_file.push({
                                             title: `${element}`,
                                             path: path + '/' + key[i] + '/' + element,
@@ -114,7 +146,8 @@ class api{
         var Uploadfile = await this.callUpload(indexUpload);
         var subUploadfile = await this.make_nested(Uploadfile, '/dcm')
 
-
+        var Csvfile = await this.callCsv();
+        var subCsvfile = await this.make_nested(Csvfile, '/csv')
 
         const SidebarData = [
             {
@@ -131,6 +164,15 @@ class api{
                 ActiveIcon: <BsIcons.BsPlusSquareFill/>,
                 subNav: subUploadfile,
                 MaxIndex: Uploadfile.MaxIndex,
+            
+            },
+            {
+                title: 'Csv File',
+                idleIcon: <BsIcons.BsPlusSquare/>,
+                ActiveIcon: <BsIcons.BsPlusSquareFill/>,
+                subNav: subCsvfile,
+                MaxIndex: Csvfile.MaxIndex,
+                
             
             }
         ]

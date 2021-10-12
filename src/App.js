@@ -8,7 +8,8 @@ import Navbar from './Navbar'
 import Doc from './pages/doc'
 import About from './pages/about'
 import Contact from './pages/contact'
-import CSV from './pages/csv'
+import CSV2 from './pages/csv'
+import { withRouter } from "react-router";
 
 class App extends Component{
 
@@ -28,11 +29,12 @@ class App extends Component{
                   <Sidebar ref={instance => { this.child = instance; }}/>
 
                 <Switch>
-                  <Route path='/' exact component={Home}/>
+                  <Route exact path='/' exact component={Home}/>
                   <Route path='/doc' component={Doc}/>
                   <Route path='/about' component={About}/>
                   <Route path='/contact' component={Contact}/>
-                  <Route path='/csv/*' component={CSV}/>
+                  <Route path='/csv/*' exact component={CSV2}/>
+
                   <Route path='/dcm/*' exact>
                     <DcmViewer />
                   </Route>
