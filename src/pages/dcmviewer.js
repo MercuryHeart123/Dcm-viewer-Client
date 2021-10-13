@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import dicomParser  from "dicom-parser";
 import './css/dcmviewer.css';
 import cornerstone from "cornerstone-core";
@@ -16,7 +16,7 @@ cornerstoneWADOImageLoader.configure({
 
 
 export default function DcmViewer() {
-
+        const [fileName, setfileName] = useState("");
         const {...id} = useParams();
 
         useEffect(() => {
@@ -50,7 +50,15 @@ export default function DcmViewer() {
         }
 
         function downloadAndView() {
-
+            var fileName = ""
+            for(let i=0;i<id[0].length;i++){
+                if(id[0][i] == "/"){
+                    fileName = ""
+                    continue
+                }
+                fileName += id[0][i]
+            }
+            setfileName(fileName);
             let url = `http://localhost:8080/dcm/${id[0]}`;
 
             // prefix the url with wadouri: so cornerstone can find the image loader
@@ -75,9 +83,10 @@ export default function DcmViewer() {
                
         }, [id]);
           
-    return <div class="container">
+    return <div class="container" style={{height: '92vh',width: '50vw'}}>
     <br/>
     <div id="loadProgress">Image Load Progress:</div>
+    <div>{fileName}</div>
     <br/>
     <div id="dicomImage" ></div>
 

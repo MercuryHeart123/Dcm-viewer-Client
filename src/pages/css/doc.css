@@ -1,3 +1,7 @@
 .box{
-    padding-left: 2vw;
+    padding: 2vw;
+    font-size: 0.9vw;
+}
+.box h1{
+    font-size: 2vw;
 }

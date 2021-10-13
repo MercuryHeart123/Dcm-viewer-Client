@@ -2,9 +2,10 @@
 
     margin-top: 2vh;
     margin-bottom: 2vh;
-    margin-left: 3vw;
-    margin-right: 2vw;
+    margin-left: 2vw;
+    margin-right: 3vw;
     height: 33%;
-    width: 35%;
+    width: 33%;
 }
 #scrollableDiv::-webkit-scrollbar { width: 0 !important }  /* hide scrollbar but scrollable */
+/* hide scrollbar but scrollable */

@@ -20,6 +20,7 @@ class App extends Component{
     render(){
       return(
               <Router>
+                <section style={{maxHeight: '100vh'}}>
                 <Navbar reloadCallback={this.reloadComponent}/>
                 <section style={{
                   display: 'flex',
@@ -39,6 +40,7 @@ class App extends Component{
                     <DcmViewer />
                   </Route>
                 </Switch>
+                </section>
                 </section>
               </Router>
       )

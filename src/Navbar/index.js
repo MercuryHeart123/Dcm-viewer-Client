@@ -47,10 +47,10 @@ class Navbars extends Component {
             <>
                 <Nav>
                     <NavLink to="/">
-                        <h1>DCM Viewer</h1>
+                        <h1 style={{fontSize:'1.8vw'}}>DCM Viewer</h1>
                     </NavLink>
                     <Bars />
-                    <NavMenu>
+                    <NavMenu style={{fontSize:'0.9vw'}}>
                         <NavLink to="/doc" acticeStyle>
                             Document
                         </NavLink>

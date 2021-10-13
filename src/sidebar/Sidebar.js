@@ -11,8 +11,8 @@ const SidebarNav =  styled.nav`
     background: #252831;
     font-size: 2rem;
     padding-right: 2px;
-    min-height: 90vh;
 
+    ::-webkit-scrollbar { width: 0 !important }
     display: flex;
     flex-direction: column ; 
 
@@ -75,7 +75,7 @@ class Sidebar extends Component{
 
         return (
             // <Scrollbars style={{ width:'20vw', height: '91vh'}}>
-                <SidebarNav >
+                <SidebarNav style={{ height: '92vh', overflowY: "auto" }}>
                     {submenu}
                 </SidebarNav>
             // </Scrollbars>

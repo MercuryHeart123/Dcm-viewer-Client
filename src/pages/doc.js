@@ -12,9 +12,11 @@ const doc = () => {
           <br/>
           <p>2. การอัพโหลดไฟล์ภาพ dcm ขึ้นมาบนเว็บไซต์</p>
           <NavBtnLink style={{
-            width: '4rem'
+            width: '6vw',
+            fontSize: '1vw',
+            textAlign:'center',
           }}>Upload</NavBtnLink>
-          <p>ถ้าหากกดลงไปที่ปุ่มลักษณะนี้ที่ตำแหน่งขวาบนของ Nav bar จะทำการอัพโหลดไฟล์ได้</p>
+          <p style={{paddingTop:'2vh'}}>ถ้าหากกดลงไปที่ปุ่มลักษณะนี้ที่ตำแหน่งขวาบนของ Nav bar จะทำการอัพโหลดไฟล์ได้</p>
 
         </div>
     )

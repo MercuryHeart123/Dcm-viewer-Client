@@ -139,11 +139,11 @@ class csv extends Component{
       render(){
 
         let createChart =  this.state.nonUniqueChart.map((name, index) => {
-          return <Bar data={this.createChart(name)}/>
+          return <Bar data={this.createChart(name)} />
         })
 
         return (
-          <section style={{display:'inline-flex',marginLeft: 'auto',marginRight: 'auto'}}>
+          <section style={{display:'inline-flex',height:'92vh',marginLeft: 'auto',marginRight: 'auto'}}>
           <div class="chart" >
 
             {createChart} {/* call createChart to create chart from csvFile that prepare by componentdidmount */}
