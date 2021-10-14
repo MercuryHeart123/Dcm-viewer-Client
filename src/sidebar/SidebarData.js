@@ -2,12 +2,13 @@ import * as BsIcons from 'react-icons/bs'
 const http = require('http');
 class api{
     static callLocal(index){
+        console.log(index);
         return new Promise(async(resolve, reject) => {
 
             const options = {
                 hostname: 'localhost',
                 port: 8080,
-                path: `/list/local/${index}`,
+                path: `/list/local/test/${index}`,
                 method: 'GET'
             }
             const req = await http.request(options, res => {
@@ -86,68 +87,98 @@ class api{
         })
     }
 
-    static async make_nested(Localfile, path){
-
-        var key = Object.keys(Localfile);
-        var tmp = [];
+    static async make_nested(Localfile){
         var arr = [];
-        for(let i=0; i<key.length ; i++){
-            console.log(key[i]);
-            if(Localfile[key[i]] != true){
+
+        if(Localfile[`MaxIndex`] != null){
+            var key = Object.keys(Localfile);
+
+            return await this.make_nested(Localfile[key[0]]);
+        }
+        for(let i=0;i<Localfile.length;i++){
+            if(Localfile[i][`path`] == null){
                 var obj =   {
-                                title: `${key[i]}`,
-                                idleIcon: <BsIcons.BsPlusSquare/>,
-                                ActiveIcon: <BsIcons.BsPlusSquareFill/>,
-
-                            }
-                let nested_obj = Localfile[`${key[i]}`];
-                if (obj[`child`] == null){ //init child array
-                    obj[`child`] = [];
-                }
-                var check = await this.make_nested(nested_obj, path + '/' + key[i]) // pending promises and pass a key to nest an obj
-
-                var nested_file = [];
-                check.forEach(element => {
-
-                    if(String(element).includes('.dcm') || String(element).includes('.csv')){ //check return from recursion is a .dcm file
-                        nested_file.push({
-                                            title: `${element}`,
-                                            path: path + '/' + key[i] + '/' + element,
-                                            idleIcon: <BsIcons.BsPlusSquare/>,
-                                            ActiveIcon: <BsIcons.BsPlusSquareFill/>,
-                                        })
+                        title: `${Localfile[i][`title`]}`,
+                        idleIcon: <BsIcons.BsPlusSquare/>,
+                        ActiveIcon: <BsIcons.BsPlusSquareFill/>,
                     }
-                    else{
-                        nested_file.push(element);
-                    }
-                })
-                obj[`child`].push(nested_file)
-                tmp.push(obj); //collecting obj in tmp variable
 
-                if(i==key.length-1){
-
-                    return tmp //return in last loop tmp warp a every obj together
+                var children = await this.make_nested(Localfile[i][`children`]);
+                obj[`children`] = children;
+                arr.push(obj);
+                if(i==Localfile.length-1){
+                    return arr
                 }
-   
             }
             else{
-                arr.push(key[i]);
+                var obj = {
+                    title: `${Localfile[i][`title`]}`,
+                    path: Localfile[i][`path`],
+                    idleIcon: <BsIcons.BsPlusSquare/>,
+                    ActiveIcon: <BsIcons.BsPlusSquareFill/>,
+                }
+                arr.push(obj);
             }
         }
+        return arr
+        // var key = Object.keys(Localfile);
+        // var tmp = [];
+        // var arr = [];
+        // for(let i=0; i<key.length ; i++){
+        //     if(Localfile[key[i]] != true){
+        //         var obj =   {
+        //                         title: `${key[i]}`,
+        //                         idleIcon: <BsIcons.BsPlusSquare/>,
+        //                         ActiveIcon: <BsIcons.BsPlusSquareFill/>,
 
-        return arr //exit condition
+        //                     }
+        //         let nested_obj = Localfile[`${key[i]}`];
+        //         if (obj[`child`] == null){ //init child array
+        //             obj[`child`] = [];
+        //         }
+        //         var check = await this.make_nested(nested_obj, path + '/' + key[i]) // pending promises and pass a key to nest an obj
+
+        //         var nested_file = [];
+        //         check.forEach(element => {
+
+        //             if(String(element).includes('.dcm') || String(element).includes('.csv')){ //check return from recursion is a .dcm file
+        //                 nested_file.push({
+        //                                     title: `${element}`,
+        //                                     path: path + '/' + key[i] + '/' + element,
+        //                                     idleIcon: <BsIcons.BsPlusSquare/>,
+        //                                     ActiveIcon: <BsIcons.BsPlusSquareFill/>,
+        //                                 })
+        //             }
+        //             else{
+        //                 nested_file.push(element);
+        //             }
+        //         })
+        //         obj[`child`].push(nested_file)
+        //         tmp.push(obj); //collecting obj in tmp variable
+
+        //         if(i==key.length-1){
+
+        //             return tmp //return in last loop tmp warp a every obj together
+        //         }
+   
+        //     }
+        //     else{
+        //         arr.push(key[i]);
+        //     }
+        // }
+
+        // return arr //exit condition
     }
 
     static async pending(indexLocal, indexUpload){
         var Localfile = await this.callLocal(indexLocal); // call an api to list a file in local dir
-        var subLocalfile = await this.make_nested(Localfile, '/dcm'); //pass Localfile return a full object that ready to create component
-
-
+        var subLocalfile = await this.make_nested(Localfile); //pass Localfile return a full object that ready to create component
+        console.log(Localfile);
         var Uploadfile = await this.callUpload(indexUpload);
-        var subUploadfile = await this.make_nested(Uploadfile, '/dcm')
+        var subUploadfile = await this.make_nested(Uploadfile)
 
         var Csvfile = await this.callCsv();
-        var subCsvfile = await this.make_nested(Csvfile, '/csv')
+        var subCsvfile = await this.make_nested(Csvfile)
 
         const SidebarData = [
             {

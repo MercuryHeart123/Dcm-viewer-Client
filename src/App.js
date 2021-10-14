@@ -9,7 +9,6 @@ import Doc from './pages/doc'
 import About from './pages/about'
 import Contact from './pages/contact'
 import CSV2 from './pages/csv'
-import { withRouter } from "react-router";
 
 class App extends Component{
 

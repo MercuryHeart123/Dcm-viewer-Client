@@ -24,8 +24,8 @@ class Sidebar extends Component{
         super(props);
         this.state = {
             SidebarData: [],
-            indexLocal: 2,
-            indexUpload: 2,
+            indexLocal: 5,
+            indexUpload: 5,
         }
 
     }
@@ -46,13 +46,13 @@ class Sidebar extends Component{
     }
 
     changeIndexLocal = () => {
-        this.state.indexLocal += 2;
+        this.state.indexLocal += 5;
         this.updateData(this.state.indexLocal, this.state.indexUpload);
 
     }
 
     changeIndexUpload = () => {
-        this.state.indexUpload += 2;
+        this.state.indexUpload += 5;
         
         this.updateData(this.state.indexLocal, this.state.indexUpload);
 

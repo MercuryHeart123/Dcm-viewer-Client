@@ -15,6 +15,7 @@ const doc = () => {
             width: '6vw',
             fontSize: '1vw',
             textAlign:'center',
+            
           }}>Upload</NavBtnLink>
           <p style={{paddingTop:'2vh'}}>ถ้าหากกดลงไปที่ปุ่มลักษณะนี้ที่ตำแหน่งขวาบนของ Nav bar จะทำการอัพโหลดไฟล์ได้</p>
 
