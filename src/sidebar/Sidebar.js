@@ -24,13 +24,14 @@ class Sidebar extends Component{
         super(props);
         this.state = {
             SidebarData: [],
-            indexLocal: 5,
+            testindexLocal: 5,
+            trainindexLocal: 5,
             indexUpload: 5,
         }
 
     }
-    updateData = (indexLocal, indexUpload) => {
-        api.pending(indexLocal, indexUpload)
+    updateData = (testindexLocal, trainindexLocal, indexUpload) => {
+        api.pending(testindexLocal, trainindexLocal, indexUpload)
           .then((response) => {
               let fileList = response;
 
@@ -45,21 +46,26 @@ class Sidebar extends Component{
         this.updateData(this.state.indexUpload);
     }
 
-    changeIndexLocal = () => {
-        this.state.indexLocal += 5;
-        this.updateData(this.state.indexLocal, this.state.indexUpload);
-
+    changeTestIndexLocal = () => {
+        this.state.testindexLocal += 5;
+        this.updateData(this.state.testindexLocal, this.state.trainindexLocal, this.state.indexUpload);
     }
+
+    changeTrainIndexLocal = () => {
+        this.state.trainindexLocal += 5;
+        this.updateData(this.state.testindexLocal, this.state.trainindexLocal, this.state.indexUpload);
+    }
+
 
     changeIndexUpload = () => {
         this.state.indexUpload += 5;
         
-        this.updateData(this.state.indexLocal, this.state.indexUpload);
+        this.updateData(this.state.testindexLocal, this.state.trainindexLocal, this.state.indexUpload);
 
     }
 
     componentDidMount(){
-        this.updateData(this.state.indexLocal, this.state.indexUpload);
+        this.updateData(this.state.testindexLocal, this.state.trainindexLocal, this.state.indexUpload);
     }
 
     render(){
@@ -68,8 +74,9 @@ class Sidebar extends Component{
 
         let submenu = this.state.SidebarData.map((item) => {
 
-            return <SidebarMenu item={item} indexLocal={this.state.indexLocal} indexUpload={this.state.indexUpload}
-                    callbackLocalIndex={this.changeIndexLocal} callbackUploadIndex={this.changeIndexUpload}/> 
+            return <SidebarMenu item={item} TestindexLocal={this.state.testindexLocal} indexUpload={this.state.indexUpload}
+                    TrainindexLocal={this.state.trainindexLocal} callbackTrainindexLocal={this.changeTrainIndexLocal} 
+                    callbackTestLocalIndex={this.changeTestIndexLocal} callbackUploadIndex={this.changeIndexUpload}/> 
 
         })
 

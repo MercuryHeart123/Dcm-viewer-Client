@@ -1,14 +1,14 @@
 import * as BsIcons from 'react-icons/bs'
 const http = require('http');
 class api{
-    static callLocal(index){
+    static callLocal(dir, index){
         console.log(index);
         return new Promise(async(resolve, reject) => {
 
             const options = {
                 hostname: 'localhost',
                 port: 8080,
-                path: `/list/local/test/${index}`,
+                path: `/list/local/${dir}/${index}`,
                 method: 'GET'
             }
             const req = await http.request(options, res => {
@@ -170,10 +170,13 @@ class api{
         // return arr //exit condition
     }
 
-    static async pending(indexLocal, indexUpload){
-        var Localfile = await this.callLocal(indexLocal); // call an api to list a file in local dir
-        var subLocalfile = await this.make_nested(Localfile); //pass Localfile return a full object that ready to create component
-        console.log(Localfile);
+    static async pending(testIndexLocal, trainIndexLocal, indexUpload){
+        var testLocalfile = await this.callLocal("test", testIndexLocal); // call an api to list a file in local dir
+        var testsubLocalfile = await this.make_nested(testLocalfile); //pass Localfile return a full object that ready to create component
+
+        var trainLocalfile = await this.callLocal("train", trainIndexLocal); 
+        var trainsubLocalfile = await this.make_nested(trainLocalfile);
+
         var Uploadfile = await this.callUpload(indexUpload);
         var subUploadfile = await this.make_nested(Uploadfile)
 
@@ -182,11 +185,19 @@ class api{
 
         const SidebarData = [
             {
-                title: 'Local Dcm File',
+                title: 'Test Local Dcm File',
                 idleIcon: <BsIcons.BsPlusSquare/>,
                 ActiveIcon: <BsIcons.BsPlusSquareFill/>,
-                subNav: subLocalfile,
-                MaxIndex: Localfile.MaxIndex,
+                subNav: testsubLocalfile,
+                MaxIndex: testLocalfile.MaxIndex,
+
+            },
+            {
+                title: 'Train Local Dcm File',
+                idleIcon: <BsIcons.BsPlusSquare/>,
+                ActiveIcon: <BsIcons.BsPlusSquareFill/>,
+                subNav: trainsubLocalfile,
+                MaxIndex: trainLocalfile.MaxIndex,
 
             },
             {
