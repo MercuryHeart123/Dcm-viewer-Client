@@ -83,7 +83,7 @@ export default function DcmViewer() {
                
         }, [id]);
           
-    return  <div class="container" style={{height: '92vh',width: '50vw'}}>
+    return  <div className="container" style={{height: '92vh',width: '50vw'}}>
                 <br/>
                     <div id="loadProgress">Image Load Progress:</div>
                     <div>{fileName}</div>

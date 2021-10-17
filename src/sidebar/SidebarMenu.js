@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import * as RiIcons from 'react-icons/ri'
+import * as BsIcons from 'react-icons/bs'
 import Sidebar_nested from './Sidebar_nested'
+import api from './SidebarData';
+
 const SidebarLink = styled.span`
 
     display: flex;
@@ -68,7 +71,13 @@ class SidebarMenu extends Component{
         super(props);
         this.state = {
             subNav: false,
-
+            title: "",
+            idleIcon: <BsIcons.BsPlusSquare/>,
+            ActiveIcon: <BsIcons.BsPlusSquareFill/>,
+            MaxIndex: 0,
+            StartIndex: 0,
+            EndIndex: 5,
+            Data : [],
         }
       }
 
@@ -76,53 +85,62 @@ class SidebarMenu extends Component{
         subNav: !this.state.subNav
     })
 
-    sendBackTestIndexLocal = () =>{
+    IncreaseIndex = () => {
+        this.state.StartIndex = this.state.EndIndex;
+        this.state.EndIndex += 5;
+        this.updateData();
 
-        this.props.callbackTestLocalIndex()
+    }
+    forceUpdate = () => {
+        this.state.EndIndex += 1;
+        api.pending(0, this.state.EndIndex, this.props.item)
+            .then((response) => {
+                let fileList = response;
+                this.setState({
+                    Data : fileList.subNav
+                })
+            })
+        
     }
 
-    sendBackTrainIndexLocal = () =>{
+    updateData = () => {
 
-        this.props.callbackTrainindexLocal()
-    }
-    
-    sendBackIndexUpload = () =>{
-        this.props.callbackUploadIndex()
+        api.pending(this.state.StartIndex, this.state.EndIndex, this.props.item)
+          .then((response) => {
+                let fileList = response;
+                fileList.subNav.map((item, index) => {
+                    this.state.Data.push(item)
+                })
+                this.setState({
+                    title : fileList.title,
+                    MaxIndex : fileList.MaxIndex,
+                })
+
+          })
     }
 
-    
+    componentDidMount(){
+        this.updateData();
+    }
+
     render(){
         return (
             <>  
             
-                <SidebarLink onClick = {this.props.item.subNav && this.showSubnav}>
+                <SidebarLink onClick = {this.state.Data && this.showSubnav}>
                     <div>
                         {/* 
                             if have subNav and state of subnav is true will return active icon 
                             else if only have subnav will return idle icon 
                             else return null
                         */}
-                        {this.props.item.subNav && this.state.subNav ? this.props.item.ActiveIcon: this.props.item.subNav ? this.props.item.idleIcon : null} 
-                        <SidebarLabel>{this.props.item.title}</SidebarLabel>
+                        {this.state.subNav ? this.state.ActiveIcon: this.state.idleIcon} 
+                        <SidebarLabel>{this.state.title}</SidebarLabel>
                     </div>
                 </SidebarLink>
-                <Sidebar_nested item={this.props.item.subNav} firstcall={true}  pad={2} presub={this.state.subNav}/>
+                <Sidebar_nested item={this.state.Data} firstcall={true}  pad={2} presub={this.state.subNav}/>
 
-                {this.state.subNav && this.props.item.title.search('Test') >=0 && this.props.TestindexLocal < this.props.item.MaxIndex &&
-
-                    <Dropdown style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingTop: '0'
-                        
-                    }} onClick={this.sendBackTestIndexLocal}>
-                        <RiIcons.RiArrowDownSLine />
-                        {` ${this.props.item.MaxIndex - this.props.TestindexLocal} Left`}
-                    </Dropdown>
-                }
-
-                {this.state.subNav && this.props.item.title.search('Train') >=0 && this.props.TrainindexLocal < this.props.item.MaxIndex &&
+                {this.state.subNav && this.state.EndIndex < this.state.MaxIndex &&
 
                     <Dropdown style={{
                         display: 'flex',
@@ -130,26 +148,12 @@ class SidebarMenu extends Component{
                         justifyContent: 'center',
                         paddingTop: '0'
                         
-                    }} onClick={this.sendBackTrainIndexLocal}>
+                    }} onClick={this.IncreaseIndex}>
                         <RiIcons.RiArrowDownSLine />
-                        {` ${this.props.item.MaxIndex - this.props.TrainindexLocal} Left`}
+                        {` ${this.state.MaxIndex - this.state.EndIndex} Left`}
                     </Dropdown>
                 }
 
-                {this.state.subNav && this.props.item.title.search('Upload') >=0 && this.props.indexUpload < this.props.item.MaxIndex &&
-
-                    <Dropdown style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingTop: '0'
-                        
-                    }} onClick={this.sendBackIndexUpload}>
-                        <RiIcons.RiArrowDownSLine />
-                        {` ${this.props.item.MaxIndex - this.props.indexUpload} Left`}
-                    </Dropdown>
-
-                }
 
     
             </>

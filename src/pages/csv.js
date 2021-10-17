@@ -64,7 +64,6 @@ class csv extends Component{
 
         var arr_label = [];
         var Key = Object.keys(obj);
-        console.log(key);
         Key.map((item) => { // map nonUnique label to arr_label
             if(obj[item][`unique`].length == 0){
                 arr_label.push(item)
@@ -111,7 +110,7 @@ class csv extends Component{
 
       start = async() => {
         const {...id} = this.props.match.params;
-        console.log(id);
+
             await parse(`http://localhost:8080/csv/${id[0]}`, {  // use papaparse to parse data of csv file to json  
                             download: true,
                             header: true,

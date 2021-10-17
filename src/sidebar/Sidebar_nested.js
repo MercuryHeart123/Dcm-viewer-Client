@@ -68,7 +68,6 @@ class Sidebar_nested extends Component{
             return false
         }
         var gen_dir = (item) => {
-            console.log(123);
             if(this.props.firstcall){ // if isfirstcall will skip render this component 
                 this.state.subNav = true
             }
@@ -78,15 +77,14 @@ class Sidebar_nested extends Component{
                     var sub_dir = item.map((element, index) => {
                                     return(
                                             <Sidebar_nested item={element[`children`]} firstcall={name_check(element[`title`])} 
-                                                            title={element[`title`]} pad={this.props.pad + 1} presub={this.state.subNav} />
+                                                            title={element[`title`]} pad={this.props.pad + 2} presub={this.state.subNav} />
                                     )
                                 })
                     return sub_dir
                 }
                 else{
                     var dcm = item.map((element, index) => {  //return a component of .dcm file
-                        console.log(element.path);
-                        return (<DropdownLink to={element.path} key={index} style={{paddingLeft:`${this.props.pad}rem`}}>
+                        return (<DropdownLink to={element.path} key={index} style={{paddingLeft:`${this.props.pad+2}rem`}}>
                                     <HiIcons.HiOutlineDocumentText />
                                     <SidebarLabel>{element.title}</SidebarLabel>
                                 </DropdownLink>)

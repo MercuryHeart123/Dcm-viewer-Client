@@ -1,8 +1,8 @@
-import React, {useRef, Component, Route} from 'react'
-import axios, {post} from 'axios';
+import React, {Component} from 'react'
+import {post} from 'axios';
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from './NavbarElements'
 import { withRouter } from "react-router-dom";
-import Dropdown from './dropdown'
+
 
 class Navbars extends Component {
 
@@ -51,13 +51,13 @@ class Navbars extends Component {
                     </NavLink>
                     <Bars />
                     <NavMenu style={{fontSize:'0.9vw'}}>
-                        <NavLink to="/doc" acticeStyle>
+                        <NavLink to="/doc" >
                             Document
                         </NavLink>
-                        <NavLink to="/about" acticeStyle>
+                        <NavLink to="/about" >
                             About
                         </NavLink>
-                        <NavLink to="/contact" acticeStyle>
+                        <NavLink to="/contact" >
                             Contact
                         </NavLink>
     
