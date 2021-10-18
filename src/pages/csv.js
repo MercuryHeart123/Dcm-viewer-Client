@@ -15,13 +15,13 @@ class csv extends Component{
           nonUniqueChart: [],
           allkey: [],
           loadedFile: [],
-          loadedIndex: 25,
+          loadedIndex: 100,
           color: [`rgba(255, 99, 132, 0.6)`,`rgba(54, 162, 235, 0.6)`], // init color of chart
         }
       }
       
       setChartData = (csvFile) => {
-        this.state.loadedFile = csvFile.slice(0,26); // slice full array to loadedFile(by index)
+        this.state.loadedFile = csvFile.slice(0,this.state.loadedIndex + 1); // slice full array to loadedFile(by index)
         var key = Object.keys(csvFile[0]);
         var obj = {};
         key.forEach(e => { // create unique key in obj
@@ -110,18 +110,17 @@ class csv extends Component{
 
       start = async() => {
         const {...id} = this.props.match.params;
-
-            await parse(`http://localhost:8080/csv/${id[0]}`, {  // use papaparse to parse data of csv file to json  
-                            download: true,
-                            header: true,
-                            skipEmptyLines: true,
-                            complete: async(e)=> {
-                                await this.setState({
-                                    csvFile: e.data,
-                                })
-                                this.setChartData(this.state.csvFile) // set init value to state
-                            }
-          })
+        await parse(`http://localhost:8080/csv/${id[0]}`, {  // use papaparse to parse data of csv file to json  
+                        download: true,
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: async(e)=> {
+                            await this.setState({
+                                csvFile: e.data,
+                            })
+                            this.setChartData(this.state.csvFile) // set init value to state
+                        }
+        })
       }
       async componentWillMount(){
             this.start();
@@ -138,16 +137,16 @@ class csv extends Component{
       render(){
 
         let createChart =  this.state.nonUniqueChart.map((name, index) => {
-          return <Bar data={this.createChart(name)} />
+          return <Bar data={this.createChart(name)}/>
         })
 
         return (
           <section style={{display:'inline-flex',height:'92vh',marginLeft: 'auto',marginRight: 'auto'}}>
-          <div class="chart" >
+          {this.state.nonUniqueChart.length > 0 && <div class="chart" >
 
             {createChart} {/* call createChart to create chart from csvFile that prepare by componentdidmount */}
     
-          </div>
+          </div>}
           {this.state.obj !== null &&
           <div id="scrollableDiv" style={{ height: '90vh', overflow: "auto" }}> 
             {/* make table to overflow and can scrollable */}

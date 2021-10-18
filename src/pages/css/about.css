@@ -1,0 +1,32 @@
+.box{
+    padding: 2vw;
+    font-size: 0.9vw;
+    display: flex;
+    max-width: 80vw;
+}
+.box h1{
+    font-size: 2vw;
+}
+.hello {
+    width: 20vw;
+}
+.hello h1{
+    transition: all 0.2s ease-in-out;
+    font-weight: bold;
+    font-size: 6vw;
+}
+.hello h1:hover {   
+    transition: all 0.2s ease-in-out;
+    color: #15cdfc;
+    
+}
+.dot{
+    transition: all 0.2s ease-in-out;
+    font-size: 10vw;
+    color: #15cdfc;
+    line-height: 0;
+}
+.hello h1:hover > .dot{
+    transition: all 0.2s ease-in-out;
+    color: #256ce1;
+}

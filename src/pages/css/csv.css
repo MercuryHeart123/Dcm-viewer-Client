@@ -1,10 +1,30 @@
 .chart{
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+    margin-top: auto;
+    margin-bottom: auto;
     margin-left: 2vw;
     margin-right: 3vw;
-    height: 33%;
-    width: 33%;
+    width:  45vh;
 }
-#scrollableDiv::-webkit-scrollbar { width: 0 !important }  /* hide scrollbar but scrollable */
-/* hide scrollbar but scrollable */
+
+#scrollableDiv::-webkit-scrollbar {
+    width: 10px;
+  }
+
+#scrollableDiv::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+#scrollableDiv::-webkit-scrollbar-thumb {
+    background: #256ce1;
+    border-radius: 10px;
+  }
+
+#scrollableDiv::-webkit-scrollbar-thumb:hover {
+    background: #1e5ec5;
+    border-radius: 10px;
+  }
+
+#scrollableDiv::-webkit-scrollbar-thumb:active {
+    background: #1e5ec5;
+    border-radius: 10px;
+  }
