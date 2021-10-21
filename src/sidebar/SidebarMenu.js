@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import * as RiIcons from 'react-icons/ri'
 import * as BsIcons from 'react-icons/bs'
@@ -28,23 +27,6 @@ const SidebarLink = styled.span`
 
 const SidebarLabel = styled.span`
     margin-left: 16px;
-`
-const DropdownLink = styled(Link)`
-    display: flex;
-    background: #414757;
-    height: 60px;
-    padding-top: 1rem;
-    padding-left: 3rem;
-    padding-right: 5rem;
-    align-item: center;
-    text-decoration: none;
-    color: #256CE1;
-    font-size: 18px;
-    &:hover{
-        background: #252831;
-        border-left: 4px solid #632ce4;
-        cursor: pointer;
-    }
 `
 const Dropdown = styled.span`
 display: flex;
@@ -76,7 +58,7 @@ class SidebarMenu extends Component{
             ActiveIcon: <BsIcons.BsPlusSquareFill/>,
             MaxIndex: 0,
             StartIndex: 0,
-            EndIndex: 5,
+            EndIndex: 100,
             Data : [],
         }
       }
@@ -87,7 +69,7 @@ class SidebarMenu extends Component{
 
     IncreaseIndex = () => {
         this.state.StartIndex = this.state.EndIndex;
-        this.state.EndIndex += 5;
+        this.state.EndIndex += 50;
         this.updateData();
 
     }
@@ -108,9 +90,9 @@ class SidebarMenu extends Component{
         api.pending(this.state.StartIndex, this.state.EndIndex, this.props.item)
           .then((response) => {
                 let fileList = response;
-                fileList.subNav.map((item, index) => {
-                    this.state.Data.push(item)
-                })
+                fileList.subNav.forEach(element => {
+                    this.state.Data.push(element)
+                });
                 this.setState({
                     title : fileList.title,
                     MaxIndex : fileList.MaxIndex,

@@ -44,8 +44,9 @@ class api{
             return await this.make_nested(Localfile[key[0]]);
         }
         for(let i=0;i<Localfile.length;i++){
-            if(Localfile[i][`path`] == null){
-                var obj =   {
+            var obj;
+            if(Localfile[i][`path`] === null){
+                obj =   {
                         title: `${Localfile[i][`title`]}`,
                         idleIcon: <BsIcons.BsPlusSquare/>,
                         ActiveIcon: <BsIcons.BsPlusSquareFill/>,
@@ -54,12 +55,12 @@ class api{
                 var children = await this.make_nested(Localfile[i][`children`]);
                 obj[`children`] = children;
                 arr.push(obj);
-                if(i==Localfile.length-1){
+                if(i === Localfile.length-1){
                     return arr
                 }
             }
             else{
-                var obj = {
+                obj = {
                     title: `${Localfile[i][`title`]}`,
                     path: Localfile[i][`path`],
                     idleIcon: <BsIcons.BsPlusSquare/>,

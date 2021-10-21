@@ -7,9 +7,29 @@ const SidebarNav =  styled.nav`
     background: #252831;
     font-size: 2rem;
     padding-right: 2px;
-    ::-webkit-scrollbar { width: 0 !important }
+
     display: flex;
     flex-direction: column ; 
+    ::-webkit-scrollbar {
+        width: 10px;
+      }
+    ::-webkit-scrollbar-track {
+        background: rgb(255, 255, 255);
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #256ce1;
+        border-radius: 10px;
+      }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #1e5ec5;
+        border-radius: 10px;
+      }
+    
+    ::-webkit-scrollbar-thumb:active {
+        background: #1e5ec5;
+        border-radius: 10px;
+      }
 
 `
 
@@ -42,7 +62,7 @@ class Sidebar extends Component{
         })
 
         return (
-            <SidebarNav style={{ height: '92vh', overflowY: "auto" }}>
+            <SidebarNav  style={{ height: '92vh', overflowY: "auto" }}>
                 {submenu}
             </SidebarNav>
 

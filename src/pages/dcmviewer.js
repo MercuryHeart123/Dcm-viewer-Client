@@ -52,7 +52,7 @@ export default function DcmViewer() {
         function downloadAndView() {
             var fileName = ""
             for(let i=0;i<id[0].length;i++){
-                if(id[0][i] == "/"){
+                if(id[0][i] === "/"){
                     fileName = ""
                     continue
                 }

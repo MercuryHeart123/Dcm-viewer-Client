@@ -21,7 +21,9 @@ class csv extends Component{
       }
       
       setChartData = (csvFile) => {
-        this.state.loadedFile = csvFile.slice(0,this.state.loadedIndex + 1); // slice full array to loadedFile(by index)
+        this.setState({
+          loadedFile : csvFile.slice(0,this.state.loadedIndex + 1) // slice full array to loadedFile(by index)
+        })
         var key = Object.keys(csvFile[0]);
         var obj = {};
         key.forEach(e => { // create unique key in obj
@@ -51,7 +53,7 @@ class csv extends Component{
 
                 }
 
-                if(obj[`${head}`][`${value[index]}`] == null){ // if not found a key add that value to unique keys
+                if(obj[`${head}`][`${value[index]}`] === null){ // if not found a key add that value to unique keys
                     obj[`${head}`][`unique`].push(value[index]); 
                     
                     continue;
@@ -64,12 +66,10 @@ class csv extends Component{
 
         var arr_label = [];
         var Key = Object.keys(obj);
-        Key.map((item) => { // map nonUnique label to arr_label
-            if(obj[item][`unique`].length == 0){
+        Key.forEach((item) => { // map nonUnique label to arr_label
+            if(obj[item][`unique`].length === 0){
                 arr_label.push(item)
                 Key.push(item)
-
-                return;
             }
 
         });
@@ -172,7 +172,7 @@ class csv extends Component{
                       {this.state.loadedFile.map((element, index) => {
                         return  <tr>
                                     {this.state.allkey.map((e, index) => {
-                                      if(index==0){ // return <th/> on first loop
+                                      if(index === 0){ // return <th/> on first loop
                                         return <th scope="row">{element[`${this.state.allkey[0]}`]}</th>
                                       }
                                       return <td>{element[e]}</td>

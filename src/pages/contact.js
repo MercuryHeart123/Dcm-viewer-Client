@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import './css/contact.css'
 import {FaFacebook, FaInstagram, FaGithub, FaLine, FaReact} from 'react-icons/fa'
-import { NavLink as Link } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from './logo.svg'
-import { faReact } from '@fortawesome/free-brands-svg-icons';
 const SidebarNav =  styled.a`
     margin-right: 20px;
 `

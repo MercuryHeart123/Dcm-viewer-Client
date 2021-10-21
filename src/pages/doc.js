@@ -8,7 +8,7 @@ const doc = () => {
           <p>เว็บไซต์นี้จะแบ่งเป็น 3 ส่วนใหญ่ๆ คือ</p>
           <br/>
           <p>1. การดูไฟล์ภาพ dcm (DICOM) บนเว็บไซต์</p>
-          <p>โดยเว็บไซต์ได้ใช้ <a href="https://github.com/cornerstonejs">cornerstonejs</a> เป็น library หลักในการแสดงผลไฟล์ dcm ขึ้นบนเว็บไซต์</p>
+          <p>โดยเว็บไซต์ได้ใช้ <a href="https://github.com/cornerstonejs">cornerstone.js</a> เป็น library หลักในการแสดงผลไฟล์ dcm ขึ้นบนเว็บไซต์</p>
           <br/>
           <p>2. การอัพโหลดไฟล์ภาพ dcm ขึ้นมาบนเว็บไซต์</p>
           <NavBtnLink style={{
@@ -18,7 +18,8 @@ const doc = () => {
             
           }}>Upload</NavBtnLink>
           <p style={{paddingTop:'2vh'}}>ถ้าหากกดลงไปที่ปุ่มลักษณะนี้ที่ตำแหน่งขวาบนของ Nav bar จะทำการอัพโหลดไฟล์ได้</p>
-
+          <br/>
+          <p>3. การดูไฟล์ .csv โดยใช่ <a href='https://www.chartjs.org/'>chart.js</a> ในการแสดงผลกราฟและใช้ <a href='https://www.papaparse.com/'>papaparse</a> ในการ parse csv เป็น JSON</p>
         </div>
     )
 }
