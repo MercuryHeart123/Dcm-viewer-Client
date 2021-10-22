@@ -34,7 +34,6 @@ class App extends Component{
                   <Route path='/about' component={About}/>
                   <Route path='/contact' component={Contact}/>
                   <Route path='/csv/*' exact component={CSV2}/>
-
                   <Route path='/dcm/*' exact>
                     <DcmViewer />
                   </Route>
