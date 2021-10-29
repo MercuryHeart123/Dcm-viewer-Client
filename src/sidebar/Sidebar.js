@@ -55,7 +55,11 @@ class Sidebar extends Component{
 
     render(){
 
-        let submenu = this.state.SidebarData.map((item, index) => {
+        let submenu = this.state.SidebarData.map(   
+            
+            
+            
+            (item, index) => {
 
             return <SidebarMenu ref={instance => { this.state.child.push(instance); }} item={item} key={index}/> 
 

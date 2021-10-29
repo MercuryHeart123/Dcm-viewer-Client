@@ -94,36 +94,6 @@ class Sidebar_nested extends Component{
                 }
         
             }
-            // if(this.props.firstcall){ // if isfirstcall will skip render this component 
-            //     this.state.subNav = true
-            // }
-
-            // for(let i=0;i<item.length;i++){
-            //     if ((!item[i][`title`].includes(".dcm") && (!item[i][`title`].includes(".csv") )) && this.props.presub){
-
-            //         var sub_dir = item.map((element, index) => {
-            //             return(
-            //                     <Sidebar_nested item={element[`child`][0]} firstcall={name_check(element[`title`])} 
-            //                                     title={element[`title`]} pad={this.props.pad + 1} presub={this.state.subNav} />
-            //             )
-            //         })
-            //         return sub_dir
-                    
-            //     }
-            //     else{
-            //         var dcm = item.map((element, index) => {  //return a component of .dcm file
-            //             return (<DropdownLink to={element.path} key={index} style={{paddingLeft:`${this.props.pad}rem`}}>
-            //                         <HiIcons.HiOutlineDocumentText />
-            //                         <SidebarLabel>{element.title}</SidebarLabel>
-            //                     </DropdownLink>)
-            //         })
-
-            //         return dcm
-
-            //     }
-
-            // }
-
         }
 
         return (

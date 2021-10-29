@@ -13,6 +13,7 @@ class csv extends Component{
           csvFile: [],
           obj: null,
           nonUniqueChart: [],
+          unique: [],
           allkey: [],
           loadedFile: [],
           loadedIndex: 100,
@@ -64,20 +65,21 @@ class csv extends Component{
 
         var arr_label = [];
         var Key = Object.keys(obj);
+        var uniqueKey = [];
         Key.map((item) => { // map nonUnique label to arr_label
             if(obj[item][`unique`].length == 0){
                 arr_label.push(item)
-                Key.push(item)
 
                 return;
             }
+            uniqueKey.push(item)
 
         });
-
         this.setState({ // set state in componentDidMount
             nonUniqueChart: arr_label,
             obj: obj,
             allkey: key,
+            unique: uniqueKey,
         })
 
       }
@@ -136,17 +138,91 @@ class csv extends Component{
   
       render(){
 
-        let createChart =  this.state.nonUniqueChart.map((name, index) => {
-          return <Bar data={this.createChart(name)}/>
-        })
+        let createUniqueText = (name) => {
 
+          var dataText = this.state.obj[`${name}`];
+          var key = Object.keys(dataText);
+          var percent = {};
+          var allData = 0;
+          key.forEach((e) => {
+            if(e == 'unique'){
+              var cell = Object.values(dataText[`${e}`]);
+              allData += cell.length;
+            }
+            else{
+              allData += dataText[`${e}`];
+            }
+          })
+          for(let i=0 ;i<key.length;i++){
+            var e = key[i];
+            if(e == 'unique'){
+              var cell = Object.values(dataText[`${e}`]);
+              percent[e] = cell.length/allData * 100;
+              percent[e] = Math.round(percent[e] ) ;
+              if(percent[e] >= 90) {
+                key.forEach((element) => {
+                  if(element != 'unique'){
+                    allData -= dataText[`${element}`];
+                    allData += 1;
+                  }
+                })
+                var margin = '0';
+                if(this.state.nonUniqueChart.length > 0){
+                  margin = '-4.5vw';
+                }
+                return  <div style={{textAlign:'center', margin:`${margin}`,justifyContent:'center'}}>
+                            <span style={{color:'#256ce1',fontSize:'23px'}}>{allData.toString()}</span>
+                            <br/>unique values
+                        </div>
+              }
+            }
+            else {
+              percent[e] = Math.round(dataText[`${e}`]/allData * 100) ;
+            }
+          }
+          var text = "";
+          for(let i=key.length-1 ;i>=0;i--){ // create information text
+            var e = key[i];
+            if (e == ''){
+              text += 'null';
+            }
+            else{
+              text += e;
+            }
+            text += ' : ';
+            text += percent[e].toString();
+            text += '%';
+            text += '\n';
+          }
+          return <div style={{}}> {text.split('\n').map((item, key) => { // map \n to <br/>
+            if(key !== Object.keys(percent).length-1){ // break before it have more than expect
+              return (
+                <span key={key}>
+                  {item}
+                  <br/>
+                </span>
+              )
+            }
+            return (
+              <span key={key}>
+                {item}
+              </span>
+            )
+          })}
+          </div>
+        }
+        let createChart = (name) => {
+          return <Bar data={this.createChart(name)} style={{maxHeight:'6vw'}}/>
+        }
         return (
           <section style={{display:'inline-flex',height:'92vh',marginLeft: 'auto',marginRight: 'auto'}}>
-          {this.state.nonUniqueChart.length > 0 && <div class="chart" >
-
-            {createChart} {/* call createChart to create chart from csvFile that prepare by componentdidmount */}
+          {
+          // this.state.nonUniqueChart.length > 0 && <div class="chart" >
+            
+          //   {createChart} {/* call createChart to create chart from csvFile that prepare by componentdidmount */}
     
-          </div>}
+          // </div>
+          }
           {this.state.obj !== null &&
           <div id="scrollableDiv" style={{ height: '90vh', overflow: "auto" }}> 
             {/* make table to overflow and can scrollable */}
@@ -157,13 +233,24 @@ class csv extends Component{
                             loader={<h4>Loading...</h4>}
                             >
               {/* loadedIndex increase by 10 every client reach bottom of table */}
-              <div style={{paddingRight:'2vw',maxWidth: '40vw', paddingTop:'2vh'}}>
+              <div style={{paddingRight:'2vw', paddingTop:'2vh',maxWidth: '65vw'}}>
 
                   <table class='table' > 
+                    
                     <thead>
                       <tr>
-                        {Object.keys(this.state.loadedFile[0]).map((element, index) => {
+                        {this.state.allkey.map((element, index) => {
                           return <th scope="col">{element}</th>
+                        })}
+                      </tr>
+                    </thead>
+                    <thead>
+                      <tr >
+                        {this.state.allkey.map((name, index) => {
+                          if (this.state.nonUniqueChart.includes(name)){
+                            return <th scope="col" >{createChart(name)}</th>
+                          }
+                          return <th scope="col" >{createUniqueText(name)}</th>
                         })}
                       </tr>
                     </thead>

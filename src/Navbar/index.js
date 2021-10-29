@@ -9,9 +9,6 @@ class Navbars extends Component {
     constructor(props){
         super(props);
         this.myRef = React.createRef();
-        this.state = {
-            selected: 'Choose Me'
-        }
         
     }
 
@@ -30,8 +27,6 @@ class Navbars extends Component {
             await post(url, formData, {
                 headers: headers
             }).then(alert("Your file has been uploaded!")).then(this.props.reloadCallback()) //recall api to list new update
-
-
 
         }
     }

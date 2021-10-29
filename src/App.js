@@ -29,12 +29,12 @@ class App extends Component{
                   <Sidebar ref={instance => { this.child = instance; }}/>
 
                 <Switch>
-                  <Route exact path='/' exact component={Home}/>
+                  <Route exact path='/' component={Home}/>
                   <Route path='/doc' component={Doc}/>
                   <Route path='/about' component={About}/>
                   <Route path='/contact' component={Contact}/>
-                  <Route path='/csv/*' exact component={CSV2}/>
-                  <Route path='/dcm/*' exact>
+                  <Route path='/csv/*' component={CSV2}/>
+                  <Route path='/dcm/*'>
                     <DcmViewer />
                   </Route>
                 </Switch>

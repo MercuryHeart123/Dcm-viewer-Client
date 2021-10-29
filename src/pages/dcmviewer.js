@@ -81,7 +81,7 @@ export default function DcmViewer() {
                         </div>
                     }
                         <br/>
-                    <div id="dicomImage" ></div>
+                    <div id="dicomImage"></div>
                 </div>
                     
             </>
