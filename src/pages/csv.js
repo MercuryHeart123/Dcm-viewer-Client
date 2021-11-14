@@ -12,9 +12,7 @@ class csv extends Component{
         super(props);
         this.state = {
           csvFile: [],
-          originalCsv : null,
           obj: null,
-          forceLoad : false,
           nonUniqueChart: [],
           sortedState: {},
           unique: [],
@@ -121,9 +119,6 @@ class csv extends Component{
                         header: true,
                         skipEmptyLines: true,
                         complete: (e)=> {
-                            if(this.state.originalCsv == null){
-                              this.state.originalCsv =  e.data
-                            }
                             this.setState({
                                 csvFile: e.data,
 
