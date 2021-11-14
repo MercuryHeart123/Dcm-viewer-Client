@@ -28,6 +28,7 @@ export default function DcmViewer() {
 
                 try {
                     cornerstone.loadAndCacheImage(imageId).then(function(image) {
+                        console.log('image',image);
                         var viewport = cornerstone.getDefaultViewportForImage(element, image);
                         
                         cornerstone.displayImage(element, image, viewport);

@@ -3,6 +3,7 @@ import { Bar } from 'react-chartjs-2'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { parse } from "papaparse";
 import './css/csv.css'
+import * as TiIcon from 'react-icons/ti'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { withRouter } from "react-router";
 
@@ -11,8 +12,11 @@ class csv extends Component{
         super(props);
         this.state = {
           csvFile: [],
+          originalCsv : null,
           obj: null,
+          forceLoad : false,
           nonUniqueChart: [],
+          sortedState: {},
           unique: [],
           allkey: [],
           loadedFile: [],
@@ -116,9 +120,13 @@ class csv extends Component{
                         download: true,
                         header: true,
                         skipEmptyLines: true,
-                        complete: async(e)=> {
-                            await this.setState({
+                        complete: (e)=> {
+                            if(this.state.originalCsv == null){
+                              this.state.originalCsv =  e.data
+                            }
+                            this.setState({
                                 csvFile: e.data,
+
                             })
                             this.setChartData(this.state.csvFile) // set init value to state
                         }
@@ -131,6 +139,7 @@ class csv extends Component{
       componentDidUpdate (prevProps){
 
         if(this.props.location.pathname !== prevProps.location.pathname){ // call when pathname changed
+          this.state.sortedState = {};
           this.start();
         }
       }
@@ -166,11 +175,7 @@ class csv extends Component{
                     allData += 1;
                   }
                 })
-                var margin = '0';
-                if(this.state.nonUniqueChart.length > 0){
-                  margin = '-4.5vw';
-                }
-                return  <div style={{textAlign:'center', margin:`${margin}`,justifyContent:'center'}}>
+                return  <div style={{textAlign:'center',justifyContent:'center'}}>
                             <span style={{color:'#256ce1',fontSize:'23px'}}>{allData.toString()}</span>
                             <br/>unique values
                         </div>
@@ -186,9 +191,19 @@ class csv extends Component{
             if (e == ''){
               text += 'null';
             }
+            else if (e == 'unique'){
+              text += `${Object.values(dataText[`${e}`])[0].slice(0,20)} ...`;
+              text += ' : ';
+              text += '0';
+              text += '%';
+              text += ' , ';
+              text += 'other';
+              
+            }
             else{
               text += e;
             }
+            
             text += ' : ';
             text += percent[e].toString();
             text += '%';
@@ -213,6 +228,52 @@ class csv extends Component{
         }
         let createChart = (name) => {
           return <Bar data={this.createChart(name)} style={{maxHeight:'6vw'}}/>
+        }
+        let changeSortedState = (name) => {
+          var obj = this.state.sortedState;
+          var key = Object.keys(obj);
+          key.forEach((e) => {
+            if(e !== name){ // reset other column sortedState
+              obj[`${e}`][`state`] = 0;
+            }
+            
+          })
+          obj[`${name}`][`state`] += 1; // when click will increase by one
+          var tmpcsv = this.state.csvFile;
+          if (obj[`${name}`][`state`]%2 == 1){
+            tmpcsv.sort(function(a, b){
+              return a[`${name}`].localeCompare(b[`${name}`]);
+          });
+          }
+          else if (obj[`${name}`][`state`]%2 == 0){
+            tmpcsv.sort(function(a, b){
+              return b[`${name}`].localeCompare(a[`${name}`]);
+          });
+          }
+          
+          this.setState({
+            sortedState : obj,
+            csvFile : tmpcsv
+
+          })
+          this.setChartData(this.state.csvFile)
+        }
+
+        let createSorter = (name) => {
+
+          if (this.state.sortedState[`${name}`] == null){
+            this.state.sortedState[`${name}`] = {};
+            this.state.sortedState[`${name}`][`state`] = 0;
+          }
+
+          
+          return <div style={{textAlign:'center' }} onClick={() => {changeSortedState(name)}}>{
+            this.state.sortedState[`${name}`][`state`] == 0 
+            ? <TiIcon.TiArrowUnsorted/>
+            :  this.state.sortedState[`${name}`][`state`] %2 == 1
+            ? <TiIcon.TiArrowSortedDown/>
+            : <TiIcon.TiArrowSortedUp/>
+          }</div>
         }
         return (
           <section style={{display:'inline-flex',height:'92vh',marginLeft: 'auto',marginRight: 'auto'}}>
@@ -248,9 +309,13 @@ class csv extends Component{
                       <tr >
                         {this.state.allkey.map((name, index) => {
                           if (this.state.nonUniqueChart.includes(name)){
-                            return <th scope="col" >{createChart(name)}</th>
+                            return <th scope="col" >{createChart(name)}{createSorter(name)}</th>
                           }
-                          return <th scope="col" >{createUniqueText(name)}</th>
+                          return  <th scope="col">
+                                                
+                                                  {createUniqueText(name)}
+                                                  {createSorter(name)}
+                                  </th>
                         })}
                       </tr>
                     </thead>
